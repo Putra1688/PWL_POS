@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LevelModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -262,8 +263,7 @@ public function edit(string $id)
  
         $check = UserModel::find($id); 
         if ($check) { 
-            if(!$request->filled('password') ){ // jika password tidak diisi, maka hapus dari 
-request 
+            if(!$request->filled('password') ){ // jika password tidak diisi, maka hapus dari request 
                 $request->request->remove('password'); 
             } 
              
