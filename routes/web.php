@@ -20,6 +20,16 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
+
+    Route::middleware(['authorize:ADM'])->group(function () {
+        Route::get('/level', [LevelController::class, 'index']);
+        Route::post('/level/list', [LevelController::class, 'list']); // untuk list json datatables
+        Route::get('/level/create', [LevelController::class, 'create']);
+        Route::post('/level', [LevelController::class, 'store']);
+        Route::get('/level/{id}/edit', [LevelController::class, 'edit']); // untuk tampilkan form edit
+        Route::put('/level/{id}', [LevelController::class, 'update']); // untuk proses update data
+        Route::delete('/level/{id}', [LevelController::class, 'destroy']); // untuk proses hapus data
+    });
     
     Route::get('/level', [LevelController::class, 'index']);
     Route::get('/kategori', [KategoriController::class, 'index']);
