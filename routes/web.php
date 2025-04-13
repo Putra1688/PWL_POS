@@ -27,7 +27,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/user/tambah', [UserController::class, 'tambah']);
     Route::get('/user/tambah_simpan', [UserController::class, 'tambah_simpan']);
     Route::get('/user/ubah/{id}', [UserController::class, 'ubah']);
-    Route::get('/user/ubah_simpan{id}', [UserController::class, 'ubah']);   
+    Route::get('/user/ubah_simpan/{id}', [UserController::class, 'ubah']);   
     
     Route::get('/', [WelcomeController::class,'index']);
     
@@ -52,17 +52,29 @@ Route::middleware(['auth'])->group(function() {
         Route::delete('/{id}', [UserController::class,'destroy']);  // menghapus data user
     });
 
+    Route::middleware(['authorize:ADM'])->group(function () {
+        Route::group(['prefix' => 'level'], function () {
+            Route::get('/', [LevelController::class, 'index']);
+            Route::post('/list', [LevelController::class, 'list']); // untuk list json datatables
+            Route::get('/create', [LevelController::class, 'create']);
+            Route::post('/', [LevelController::class, 'store']);
+            Route::get('/{id}/edit', [LevelController::class, 'edit']); // untuk tampilkan form edit
+            Route::put('/{id}', [LevelController::class, 'update']); // untuk proses update data
+            Route::delete('/{id}', [LevelController::class, 'destroy']); // untuk proses hapus data
+        });
+        
+        Route::group(['prefix' => 'kategori'], function () {
+            Route::get('/', [KategoriController::class, 'index']);
+            Route::post('/list', [KategoriController::class, 'list']); // untuk list json datatables
+            Route::get('/create', [KategoriController::class, 'create']);
+            Route::post('/', [KategoriController::class, 'store']);
+            Route::get('/{id}/edit', [KategoriController::class, 'edit']); // untuk tampilkan form edit
+            Route::put('/{id}', [KategoriController::class, 'update']); // untuk proses update data
+            Route::delete('/{id}', [KategoriController::class, 'destroy']); // untuk proses hapus data
+        });
+    });
 });
 
-Route::middleware(['authorize:ADM'])->group(function () {
-    Route::get('/level', [LevelController::class, 'index']);
-    Route::post('/level/list', [LevelController::class, 'list']); // untuk list json datatables
-    Route::get('/level/create', [LevelController::class, 'create']);
-    Route::post('/level', [LevelController::class, 'store']);
-    Route::get('/level/{id}/edit', [LevelController::class, 'edit']); // untuk tampilkan form edit
-    Route::put('/level/{id}', [LevelController::class, 'update']); // untuk proses update data
-    Route::delete('/level/{id}', [LevelController::class, 'destroy']); // untuk proses hapus data
-});
 
 // artinya semua route di dalam group ini harus punya role ADM (Administrator) dan MNG (Manager)
 Route::middleware(['authorize:ADM,MNG'])->group(function () {
