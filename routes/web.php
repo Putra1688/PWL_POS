@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KategoriController;    
 use App\Http\Controllers\LevelController;    
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\StokController;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('id', '[0-9]+');
@@ -91,6 +92,36 @@ Route::middleware(['authorize:ADM,MNG'])->group(function () {
         Route::post('/import_ajax', [BarangController::class, 'import_ajax']); // ajax import
         Route::get('/export_excel', [BarangController::class, 'export_excel']); // export excel
         Route::get('/export_pdf', [BarangController::class, 'export_pdf']); // export pdf
+    });
+
+    Route::group(['prefix' => 'supplier'], function (){
+        Route::get('/', [SupplierController::class, 'index']);
+        Route::post('/list', [SupplierController::class, 'list']);
+        Route::get('/create_ajax', [SupplierController::class, 'create_ajax']); // ajax form create
+        Route::post('/barang_ajax', [SupplierController::class, 'store_ajax']); // ajax store
+        Route::get('/{id}/edit_ajax', [SupplierController::class, 'edit_ajax']); // ajax form edit
+        Route::put('/{id}/update_ajax', [SupplierController::class, 'update_ajax']); // ajax update
+        Route::get('/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']); // ajax form confirm
+        Route::delete('/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']); // ajax delete
+        Route::get('/import', [SupplierController::class, 'import']); // import
+        Route::post('/import_ajax', [SupplierController::class, 'import_ajax']); // ajax import
+        Route::get('/export_excel', [SupplierController::class, 'export_excel']); // export excel
+        Route::get('/export_pdf', [SupplierController::class, 'export_pdf']); // export pdf
+    });
+    
+    Route::group(['prefix' => 'stok'], function (){
+        Route::get('/', [StokController::class, 'index']);
+        Route::post('/list', [StokController::class, 'list']);
+        Route::get('/create_ajax', [StokController::class, 'create_ajax']); // ajax form create
+        Route::post('/barang_ajax', [StokController::class, 'store_ajax']); // ajax store
+        Route::get('/{id}/edit_ajax', [StokController::class, 'edit_ajax']); // ajax form edit
+        Route::put('/{id}/update_ajax', [StokController::class, 'update_ajax']); // ajax update
+        Route::get('/{id}/delete_ajax', [StokController::class, 'confirm_ajax']); // ajax form confirm
+        Route::delete('/{id}/delete_ajax', [StokController::class, 'delete_ajax']); // ajax delete
+        Route::get('/import', [StokController::class, 'import']); // import
+        Route::post('/import_ajax', [StokController::class, 'import_ajax']); // ajax import
+        Route::get('/export_excel', [StokController::class, 'export_excel']); // export excel
+        Route::get('/export_pdf', [StokController::class, 'export_pdf']); // export pdf
     });
 });
 
