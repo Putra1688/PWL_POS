@@ -60,7 +60,7 @@ Route::middleware(['auth'])->group(function() {
 
             Route::get('/{id}/edit_ajax', [LevelController::class, 'edit_ajax']); // untuk tampilkan form edit
             Route::put('/{id}/update_ajax', [LevelController::class, 'update_ajax']); // untuk proses update data
-            Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']); // untuk proses hapus data
+            Route::get('/{id}/delete_level', [LevelController::class, 'confirm_ajax']); // untuk proses hapus data
             Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']); // untuk proses hapus data
         });
         
