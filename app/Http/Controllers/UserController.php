@@ -7,6 +7,7 @@ use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
@@ -222,7 +223,12 @@ public function edit(string $id)
                 ]);
             }
     
-            UserModel::create($request->all());
+            UserModel::create([
+                'level_id' => $request->level_id,
+                'username' => $request->username,
+                'nama'     => $request->nama,
+                'password' => Hash::make($request->password),
+            ]);
     
             return response()->json([
                 'status' => true,

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StokModel;
 use App\Models\SupplierModel;
 use App\Models\BarangModel;
-use App\Models\User;
+use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -26,12 +26,14 @@ class StokController extends Controller
 
         $barang = BarangModel::select('barang_id', 'barang_nama')->get();
         $supplier = SupplierModel::select('supplier_id', 'supplier_nama')->get();
+        $user = UserModel::select('user_id', 'nama')->get();
 
         return view('stok.index', [
             'breadcrumb' => $breadcrumb,
             'page' => $page,
             'barang' => $barang,
             'supplier' => $supplier,
+            'user' => $user,
             'activeMenu' => $activeMenu
         ]);
     }
@@ -46,7 +48,7 @@ class StokController extends Controller
             ->addIndexColumn()
             ->addColumn('barang_nama', fn($s) => $s->barang->barang_nama ?? '-')
             ->addColumn('supplier_nama', fn($s) => $s->supplier->supplier_nama ?? '-')
-            ->addColumn('user_nama', fn($s) => $s->user->name ?? '-') // asumsi nama user di kolom 'name'
+            ->addColumn('nama', fn($s) => $s->user->name ?? '-') // asumsi nama user di kolom 'name'
             ->addColumn('aksi', function ($s) {
                 $btn  = '<button onclick="modalAction(\''.url('/stok/' . $s->stok_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
                 $btn .= '<button onclick="modalAction(\''.url('/stok/' . $s->stok_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';

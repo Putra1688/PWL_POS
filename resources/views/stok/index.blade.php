@@ -58,12 +58,12 @@
                 } 
             }, 
             columns: [
-                { data: "No_Urut", className: "text-center", width: "5%", orderable: false, searchable: false },
+                { data: "stok_id", className: "text-center", width: "5%", orderable: false, searchable: false },
                 { data: "stok_tanggal", width: "15%" },
                 { data: "supplier.supplier_nama", width: "20%" },
                 { data: "barang.barang_nama", width: "20%" },
                 { data: "stok_jumlah", className: "text-right", width: "10%" },
-                { data: "user_nama", width: "15%" },
+                { data: "user.nama", width: "15%" },
                 { data: "aksi", className: "text-center", width: "15%", orderable: false, searchable: false }
             ]
         });
