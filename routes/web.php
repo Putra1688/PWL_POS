@@ -68,11 +68,15 @@ Route::middleware(['auth'])->group(function() {
         Route::group(['prefix' => 'kategori'], function () {
             Route::get('/', [KategoriController::class, 'index']);
             Route::post('/list', [KategoriController::class, 'list']); // untuk list json datatables
-            Route::get('/create', [KategoriController::class, 'create']);
+            Route::get('/create_ajax', [KategoriController::class, 'create_ajax']);
+            Route::post('/ajax', [KategoriController::class, 'store_ajax']);
+
+            Route::get('/{id}/show_ajax',[KategoriController::class, 'show_ajax']);
             Route::post('/', [KategoriController::class, 'store']);
-            Route::get('/{id}/edit', [KategoriController::class, 'edit']); // untuk tampilkan form edit
+            Route::get('/{id}/edit_ajax', [KategoriController::class, 'edit_ajax']); // untuk tampilkan form edit
             Route::put('/{id}', [KategoriController::class, 'update']); // untuk proses update data
-            Route::delete('/{id}', [KategoriController::class, 'destroy']); // untuk proses hapus data
+            Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']);
+            Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']); // untuk proses hapus data
         });
 
         Route::group(['prefix' => 'penjualan'], function () {

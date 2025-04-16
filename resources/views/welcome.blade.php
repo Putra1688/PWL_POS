@@ -53,6 +53,7 @@
         tableStok = $('#table-stok').DataTable({ 
             processing: true, 
             serverSide: true, 
+            autoWidth: false,
             ajax: { 
                 "url": "{{ url('stok/list') }}", 
                 "dataType": "json", 
@@ -64,7 +65,7 @@
             columns: [
                 { data: "stok_id", className: "text-center", width: "5%", orderable: false, searchable: false },
                 { data: "barang.barang_nama", width: "20%" },
-                { data: "stok_jumlah", className: "text-right", width: "10%" },
+                { data: "stok_jumlah", className: "text-center", width: "10%" },
             ]
         });
 

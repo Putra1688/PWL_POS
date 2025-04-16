@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\KategoriModel;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class KategoriController extends Controller
@@ -71,4 +72,126 @@ class KategoriController extends Controller
             ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html  
             ->make(true);  
     }
+
+    public function create_ajax() {
+        $kategori = KategoriModel::select('kategori_id', 'kategori_kode', 'kategori_nama')->get();
+        return view('kategori.create_ajax')
+        ->with('kategori', $kategori);
+    }
+
+    public function store_ajax (Request $request) {
+        // cek apakah request berupa ajax
+        if($request->ajax() || $request->wantsJson()){
+            $rules = [
+
+                'kategori_kode' => 'required|string|min:3|unique:m_user,username',
+                'kategori_nama' => 'required|string|max:100',
+            ];
+    
+            // use Illuminate\Support\Facades\Validator;
+            $validator = Validator::make($request->all(), $rules);
+    
+            if($validator->fails()) {
+                return response()->json([
+                    'status' => false, // response status, false: error/gagal, true: berhasil
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors(), // pesan error validasi
+                ]);
+            }
+    
+            KategoriModel::create([
+                'kategori_id' => $request->kategori_id,
+                'kategori_kode' => $request->kategori_kode,
+                'kategori_nama'     => $request->kategori_nama
+            ]);
+    
+            return response()->json([
+                'status' => true,
+                'message' => 'Data user berhasil disimpan'
+            ]);
+        }
+        redirect('/');
+    }
+
+    public function show_ajax(string $id)
+    {
+        $kategori = KategoriModel::find($id);
+        return view('kategori.show_ajax', compact('kategori'));
+    }
+
+    // Menampilkan halaman form edit user ajax
+    public function edit_ajax(string $id)
+    {
+        $kategori = KategoriModel::find($id);
+
+
+        return view('kategori.edit_ajax', ['kategori' => $kategori]);
+    }
+
+    public function update_ajax(Request $request, $id){ 
+        // cek apakah request dari ajax 
+        if ($request->ajax() || $request->wantsJson()) { 
+            $rules = [ 
+                'level_id' => 'required|integer', 
+                'level_kode' => 'required|max:20|unique:m_level,level_nama,'.$id.',level_id', 
+                'level_nama'     => 'required|max:100'
+            ]; 
+        // use Illuminate\Support\Facades\Validator; 
+        $validator = Validator::make($request->all(), $rules); 
+ 
+        if ($validator->fails()) { 
+            return response()->json([ 
+                'status'   => false,    // respon json, true: berhasil, false: gagal 
+                'message'  => 'Validasi gagal.', 
+                'msgField' => $validator->errors()  // menunjukkan field mana yang error 
+            ]); 
+        } 
+ 
+        $check = LevelModel::find($id); 
+        if ($check) { 
+            if(!$request->filled('password') ){ // jika password tidak diisi, maka hapus dari request 
+                $request->request->remove('password'); 
+            } 
+             
+            $check->update($request->all()); 
+            return response()->json([ 
+                'status'  => true, 
+                'message' => 'Data berhasil diupdate' 
+            ]); 
+        } else{ 
+            return response()->json([ 
+                'status'  => false, 
+                'message' => 'Data tidak ditemukan' 
+            ]); 
+        } 
+    } 
+    return redirect('/'); 
+}     
+
+    public function confirm_ajax(string $id) {
+        $kategori = KategoriModel::find($id);
+        return view('kategori.confirm_ajax',['kategori' =>$kategori]);
+    }
+
+    public function delete_ajax(Request $request, $id)
+    {
+        // cek apakah request dari ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $kategori = KategoriModel::find($id);
+            if ($kategori) {
+                $kategori->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
+
 }

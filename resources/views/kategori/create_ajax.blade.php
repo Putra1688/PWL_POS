@@ -1,22 +1,22 @@
-<form action="{{ url('/level/create_ajax') }}" method="POST" id="form-tambah"> 
+<form action="{{ url('/kategori/create_ajax') }}" method="POST" id="form-tambah"> 
     @csrf 
     <div id="modal-master" class="modal-dialog modal-lg" role="document"> 
         <div class="modal-content"> 
             <div class="modal-header"> 
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Level</h5> 
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Kategori</h5> 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span 
     aria-hidden="true">&times;</span></button> 
             </div> 
             <div class="modal-body"> 
 
                 <div class="form-group"> 
-                    <label>Kode Level</label> 
+                    <label>Kode Kategori</label> 
                     <input value="" type="text" name="username" id="username" class="form-control" 
     required> 
                     <small id="error-username" class="error-text form-text text-danger"></small> 
                 </div> 
                 <div class="form-group"> 
-                    <label>Nama Level</label> 
+                    <label>Nama Kategori</label> 
                     <input value="" type="text" name="nama" id="nama" class="form-control" 
     required> 
                     <small id="error-nama" class="error-text form-text text-danger"></small> 
