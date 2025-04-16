@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StokModel;
 use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
@@ -12,8 +13,14 @@ class WelcomeController extends Controller
             'title' => 'Selamat Datang',
             'list' => ['Home', 'Welcome']
         ];
+
+        $stoks = StokModel::with('barang')->get();
         
         $activeMenu = 'dashboard';
-        return view ('welcome', ['breadcrumb' => $breadcrumb,'activeMenu'=> $activeMenu]);
+        return view ('welcome', [
+            'breadcrumb' => $breadcrumb,
+            'activeMenu'=> $activeMenu,
+            'stoks' => $stoks
+        ]);
     }
 }

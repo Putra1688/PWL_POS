@@ -6,6 +6,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KategoriController;    
 use App\Http\Controllers\LevelController;    
+use App\Http\Controllers\PenjualanController;    
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\StokController;
 use Illuminate\Support\Facades\Route;
@@ -72,6 +73,12 @@ Route::middleware(['auth'])->group(function() {
             Route::get('/{id}/edit', [KategoriController::class, 'edit']); // untuk tampilkan form edit
             Route::put('/{id}', [KategoriController::class, 'update']); // untuk proses update data
             Route::delete('/{id}', [KategoriController::class, 'destroy']); // untuk proses hapus data
+        });
+
+        Route::group(['prefix' => 'penjualan'], function () {
+            Route::get('/', [PenjualanController::class, 'index']);
+            Route::post('/list', [PenjualanController::class, 'list']); // untuk list json datatables
+            Route::get('/{id}/show_detail',[PenjualanController::class, 'show_ajax']);
         });
     });
 });
