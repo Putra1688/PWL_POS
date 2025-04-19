@@ -28,14 +28,14 @@ label="Close"><span aria-hidden="true">&times;</span></button>
     
     <div class="form-group"> 
         <label>Kode Level</label> 
-        <input value="{{ $level->level_kode }}" type="text" name="username" id="username" class="form-control" required> 
-        <small id="error-username" class="error-text form-text text-danger"></small> 
+        <input value="{{ $level->level_kode }}" type="text" name="level_kode" id="level_kode" class="form-control" required> 
+        <small id="error-level_kode" class="error-text form-text text-danger"></small> 
     </div> 
     <div class="form-group"> 
         <label>Nama Level</label> 
-        <input value="{{ $level->level_nama }}" type="text" name="nama" id="nama" 
+        <input value="{{ $level->level_nama }}" type="text" name="level_nama" id="level_nama" 
 class="form-control" required> 
-        <small id="error-nama" class="error-text form-text text-danger"></small> 
+        <small id="error-level_nama" class="error-text form-text text-danger"></small> 
     </div> 
     
 </div> 

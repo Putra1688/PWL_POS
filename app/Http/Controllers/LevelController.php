@@ -126,8 +126,8 @@ class LevelController extends Controller
         // cek apakah request dari ajax 
         if ($request->ajax() || $request->wantsJson()) { 
             $rules = [ 
-                'level_id' => 'required|integer', 
-                'level_kode' => 'required|max:20|unique:m_level,level_nama,'.$id.',level_id', 
+                 
+                'level_kode' => 'required|max:20|unique:m_level,level_kode', 
                 'level_nama'     => 'required|max:100'
             ]; 
         // use Illuminate\Support\Facades\Validator; 
@@ -143,9 +143,6 @@ class LevelController extends Controller
  
         $check = LevelModel::find($id); 
         if ($check) { 
-            if(!$request->filled('password') ){ // jika password tidak diisi, maka hapus dari request 
-                $request->request->remove('password'); 
-            } 
              
             $check->update($request->all()); 
             return response()->json([ 
