@@ -9,7 +9,7 @@
                 <div class="alert alert-danger"> 
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5> 
                     Data yang anda cari tidak ditemukan</div> 
-                <a href="{{ url('/user') }}" class="btn btn-warning">Kembali</a> 
+                <a href="{{ url('/level') }}" class="btn btn-warning">Kembali</a> 
             </div> 
         </div> 
     </div> 
@@ -26,16 +26,16 @@
             <div class="modal-body"> 
                 <div class="alert alert-warning"> 
                     <h5><i class="icon fas fa-ban"></i> Konfirmasi !!!</h5> 
-                    Saat ini hapus data level masih belum berfungsi. Website masih dalam tahap perbaikan.
+                    Apakah Anda ingin menghapus data seperti di bawah ini? 
                 </div> 
                 <table class="table table-sm table-bordered table-striped"> 
-                    <tr><th class="text-right col-3">Level ID :</th><td class="col-9">{{ $level->level_id }}</td></tr> 
                     <tr><th class="text-right col-3">Kode Level :</th><td class="col-9">{{ $level->level_kode }}</td></tr> 
-                    <tr><th class="text-right col-3">Nama Level:</th><td class="col-9">{{ $level->level_nama }}</td></tr> 
+                    <tr><th class="text-right col-3">Nama Level :</th><td class="col-9">{{ $level->level_nama }}</td></tr> 
                 </table> 
             </div> 
             <div class="modal-footer"> 
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button> 
+                <button type="submit" class="btn btn-primary">Ya, Hapus</button> 
             </div> 
         </div> 
     </div> 
