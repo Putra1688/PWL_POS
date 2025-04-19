@@ -78,7 +78,7 @@ class LevelController extends Controller
         if($request->ajax() || $request->wantsJson()){
             $rules = [
 
-                'level_kode' => 'required|string|min:3|unique:m_user,username',
+                'level_kode' => 'required|string|min:3|unique:m_level,level_nama',
                 'level_nama' => 'required|string|max:100',
             ];
     
@@ -94,14 +94,14 @@ class LevelController extends Controller
             }
     
             LevelModel::create([
-                'level_id' => $request->level_id,
+                
                 'level_kode' => $request->level_kode,
                 'level_nama'     => $request->level_nama
             ]);
     
             return response()->json([
                 'status' => true,
-                'message' => 'Data user berhasil disimpan'
+                'message' => 'Data level berhasil disimpan'
             ]);
         }
         redirect('/');

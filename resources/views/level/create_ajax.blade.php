@@ -1,4 +1,4 @@
-<form action="{{ url('/level/create_ajax') }}" method="POST" id="form-tambah"> 
+<form action="{{ url('/level/ajax') }}" method="POST" id="form-tambah"> 
     @csrf 
     <div id="modal-master" class="modal-dialog modal-lg" role="document"> 
         <div class="modal-content"> 
@@ -11,15 +11,15 @@
 
                 <div class="form-group"> 
                     <label>Kode Level</label> 
-                    <input value="" type="text" name="username" id="username" class="form-control" 
+                    <input value="" type="text" name="level_kode" id="level_kode" class="form-control" 
     required> 
-                    <small id="error-username" class="error-text form-text text-danger"></small> 
+                    <small id="error-level_kode" class="error-text form-text text-danger"></small> 
                 </div> 
                 <div class="form-group"> 
                     <label>Nama Level</label> 
-                    <input value="" type="text" name="nama" id="nama" class="form-control" 
+                    <input value="" type="text" name="level_nama" id="level_nama" class="form-control" 
     required> 
-                    <small id="error-nama" class="error-text form-text text-danger"></small> 
+                    <small id="error-level_nama" class="error-text form-text text-danger"></small> 
                 </div> 
                 
             </div> 
