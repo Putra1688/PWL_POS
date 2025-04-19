@@ -124,7 +124,8 @@ Route::middleware(['authorize:ADM,MNG'])->group(function () {
         Route::get('/', [StokController::class, 'index']);
         Route::post('/list', [StokController::class, 'list']);
         Route::get('/create_ajax', [StokController::class, 'create_ajax']); // ajax form create
-        Route::post('/barang_ajax', [StokController::class, 'store_ajax']); // ajax store
+        Route::post('/ajax', [StokController::class, 'store_ajax']); // ajax store
+        
         Route::get('/{id}/edit_ajax', [StokController::class, 'edit_ajax']); // ajax form edit
         Route::put('/{id}/update_ajax', [StokController::class, 'update_ajax']); // ajax update
         Route::get('/{id}/delete_ajax', [StokController::class, 'confirm_ajax']); // ajax form confirm

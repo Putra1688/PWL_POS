@@ -5,7 +5,7 @@
     <div class="card-header"> 
         <h3 class="card-title">Data Stok Barang</h3> 
         <div class="card-tools"> 
-            <button onclick="modalAction('{{ url('/stok/create_ajax') }}')" class="btn btn-success">Tambah Stok (Ajax)</button> 
+            <button onclick="modalAction('{{ url('/stok/create_ajax') }}')" class="btn btn-success">Tambah Stok</button> 
         </div> 
     </div> 
     <div class="card-body"> 
