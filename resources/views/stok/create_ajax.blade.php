@@ -33,7 +33,7 @@
                     <select name="user_id" id="user_id" class="form-control" required> 
                         <option value="">- Pilih User -</option> 
                         @foreach($user as $l) 
-                            <option value="{{ $l->user_id }}">{{ $l->user_nama }}</option> 
+                            <option value="{{ $l->user_id }}">{{ $l->nama }}</option> 
                         @endforeach 
                     </select> 
                     <small id="error-user_id" class="error-text form-text text-danger"></small> 
@@ -80,7 +80,10 @@
                                 Swal.fire({ 
                                     icon: 'success', 
                                     title: 'Berhasil', 
-                                    text: response.message 
+                                    text: response.message
+                                }).then(() => {
+                                    // Redirect ke halaman index stok setelah alert selesai
+                                    window.location.href = "{{ url('/stok') }}"; 
                                 }); 
                                 dataStok.ajax.reload(); 
                             }else{ 

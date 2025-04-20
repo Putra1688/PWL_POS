@@ -128,7 +128,7 @@ Route::middleware(['authorize:ADM,MNG'])->group(function () {
         
         Route::get('/{id}/edit_ajax', [StokController::class, 'edit_ajax']); // ajax form edit
         Route::put('/{id}/update_ajax', [StokController::class, 'update_ajax']); // ajax update
-        Route::get('/{id}/delete_ajax', [StokController::class, 'confirm_ajax']); // ajax form confirm
+        Route::get('/{id}/confirm_ajax', [StokController::class, 'confirm_ajax']); // ajax form confirm
         Route::delete('/{id}/delete_ajax', [StokController::class, 'delete_ajax']); // ajax delete
         Route::get('/import', [StokController::class, 'import']); // import
         Route::post('/import_ajax', [StokController::class, 'import_ajax']); // ajax import
@@ -136,5 +136,5 @@ Route::middleware(['authorize:ADM,MNG'])->group(function () {
         Route::get('/export_pdf', [StokController::class, 'export_pdf']); // export pdf
     });
 });
-
+    
 

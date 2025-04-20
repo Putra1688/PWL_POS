@@ -20,4 +20,9 @@ class PenjualanDetail extends Model
     {
         return $this->belongsTo(BarangModel::class, 'barang_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(UserModel::class, 'user_id');
+    }
 }

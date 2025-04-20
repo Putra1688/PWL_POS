@@ -49,11 +49,10 @@ class StokController extends Controller
             ->addIndexColumn()
             ->addColumn('barang_nama', fn($s) => $s->barang->barang_nama ?? '-')
             ->addColumn('supplier_nama', fn($s) => $s->supplier->supplier_nama ?? '-')
-            ->addColumn('nama', fn($s) => $s->user->name ?? '-') // asumsi nama user di kolom 'name'
+            ->addColumn('nama', fn($s) => $s->user->nama ?? '-') // asumsi nama user di kolom 'name'
             ->addColumn('aksi', function ($s) {
-                $btn  = '<button onclick="modalAction(\''.url('/stok/' . $s->stok_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\''.url('/stok/' . $s->stok_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\''.url('/stok/' . $s->stok_id . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button>';
+                $btn = '<button onclick="modalAction(\''.url('/stok/' . $s->stok_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\''.url('/stok/' . $s->stok_id . '/confirm_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button>';
                 return $btn;
             })
             ->rawColumns(['aksi'])
@@ -105,6 +104,32 @@ class StokController extends Controller
             ]);
         }
 
+        return redirect('/');
+    }
+
+    public function confirm_ajax(string $id) {
+        $stok = StokModel::find($id);
+        return view('stok.confirm_ajax',['stok' =>$stok]);
+    }
+
+    public function delete_ajax(Request $request, $id)
+    {
+        // cek apakah request dari ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $stok = StokModel::find($id);
+            if ($stok) {
+                $stok->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
         return redirect('/');
     }
 
