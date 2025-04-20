@@ -85,11 +85,7 @@
                 { data: "barang.barang_nama", width: "20%" },
                 { data: "stok_jumlah", className: "text-right", width: "10%" },
                 { data: "nama", width: "15%" },
-                { data: "aksi", className: "text-center", width: "15%", orderable: false, searchable: false,
-                    render: function(data, type, row){ 
-                        return new Intl.NumberFormat('id-ID').format(data); 
-                    } 
-                }
+                { data: "aksi", className: "text-center", width: "15%", orderable: false, searchable: false,}
             ]
         });
 
