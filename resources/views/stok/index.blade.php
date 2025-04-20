@@ -4,11 +4,32 @@
 <div class="card"> 
     <div class="card-header"> 
         <h3 class="card-title">Data Stok Barang</h3> 
-        <div class="card-tools"> 
+        <div class="card-tools">
+            <button onclick="modalAction('{{ url('/stok/import') }}')" class="btn btn-info">Import Barang</button> 
+                <a href="{{ url('/stok/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export Barang</a>
+                <a href="{{ url('/stok/export_pdf') }}" class="btn btn-warning"><i class="fa fa-file-pdf"></i> Export Barang PDF</a>  
             <button onclick="modalAction('{{ url('/stok/create_ajax') }}')" class="btn btn-success">Tambah Stok</button> 
         </div> 
     </div> 
-    <div class="card-body"> 
+    <div class="card-body">
+        <div id="filter" class="form-horizontal filter-date p-2 border-bottom mb-2"> 
+            <div class="row"> 
+                <div class="col-md-12"> 
+                    <div class="form-group form-group-sm row text-sm mb-0"> 
+                        <label for="filter_date" class="col-md-1 col-form-label">Filter</label> 
+                        <div class="col-md-3"> 
+                            <select name="filter_supplier" class="form-control form-control-sm filter_supplier"> 
+                                <option value="">- Semua -</option> 
+                                @foreach($supplier as $l) 
+                                    <option value="{{ $l->supplier_id }}">{{ $l->supplier_nama }}</option> 
+                                @endforeach 
+                            </select> 
+                            <small class="form-text text-muted">Kategori Barang</small> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div> 
+        </div>  
         @if(session('success')) 
             <div class="alert alert-success">{{ session('success') }}</div> 
         @endif 
@@ -54,7 +75,7 @@
                 "dataType": "json", 
                 "type": "POST", 
                 "data": function (d) { 
-                    // Tambahkan filter kalau nanti dibutuhkan
+                    d.filter_supplier = $('.filter_supplier').val(); // Tambahkan filter
                 } 
             }, 
             columns: [
@@ -64,7 +85,11 @@
                 { data: "barang.barang_nama", width: "20%" },
                 { data: "stok_jumlah", className: "text-right", width: "10%" },
                 { data: "nama", width: "15%" },
-                { data: "aksi", className: "text-center", width: "15%", orderable: false, searchable: false }
+                { data: "aksi", className: "text-center", width: "15%", orderable: false, searchable: false,
+                    render: function(data, type, row){ 
+                        return new Intl.NumberFormat('id-ID').format(data); 
+                    } 
+                }
             ]
         });
 
@@ -73,6 +98,9 @@
                 tableStok.search(this.value).draw(); 
             } 
         }); 
+        $('.filter_supplier').change(function(){ 
+            tableStok.draw(); 
+    }); 
     }); 
 </script> 
 @endpush

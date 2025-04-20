@@ -45,6 +45,11 @@ class StokController extends Controller
             'stok_id', 'supplier_id', 'barang_id', 'user_id', 'stok_tanggal', 'stok_jumlah'
         );
 
+        // Tambahkan filter berdasarkan supplier_id
+        if ($request->has('filter_supplier') && $request->filter_supplier != '') {
+            $stok->where('supplier_id', $request->filter_supplier);
+        }
+
         return DataTables::of($stok)
             ->addIndexColumn()
             ->addColumn('barang_nama', fn($s) => $s->barang->barang_nama ?? '-')
