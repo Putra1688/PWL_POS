@@ -31,7 +31,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/user/ubah/{id}', [UserController::class, 'ubah']);
     Route::get('/user/ubah_simpan/{id}', [UserController::class, 'ubah']);   
     
-    Route::get('/', [WelcomeController::class,'index']);
+    Route::get('/', [StokController::class, 'rekapIndex']);
+    Route::post('/rekaplist', [StokController::class, 'rekapList']);
     
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', [UserController::class,'index']);           // menampilkan halaman awal user
@@ -82,7 +83,14 @@ Route::middleware(['auth'])->group(function() {
         Route::group(['prefix' => 'penjualan'], function () {
             Route::get('/', [PenjualanController::class, 'index']);
             Route::post('/list', [PenjualanController::class, 'list']); // untuk list json datatables
+            Route::get('/create', [PenjualanController::class, 'create']);
+            Route::get('/create_ajax', [PenjualanController::class, 'create_ajax']);
+            Route::post('/ajax', [PenjualanController::class, 'store_ajax']);
+            Route::post('/', [PenjualanController::class, 'store']);
             Route::get('/{id}/show_detail',[PenjualanController::class, 'show_ajax']);
+
+            Route::get('/{id}/delete', [PenjualanController::class, 'confirm_ajax']);
+            Route::delete('/{id}/delete_ajax', [PenjualanController::class, 'delete_ajax']);
         });
     });
 });

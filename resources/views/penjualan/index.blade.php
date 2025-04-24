@@ -4,10 +4,14 @@
   <div class="card card-outline card-primary"> 
       <div class="card-header"> 
         <h3 class="card-title">{{ $page->title }}</h3> 
+        <div class="card-tools"> 
+          <button onclick="modalAction('{{ url('/penjualan/create_ajax') }}')" 
+          class="btn btn-sm btn-success mt-1">Tambah Data</button>
+        </div> 
       </div> 
       <div class="card-body">
         @if (session('success')) 
-          <div class="aler alert-success">{{ session('success') }}</div>
+          <div class="alert alert-success">{{ session('success') }}</div>
         @endif
         @if (session('error'))
           <div class="alert alert-danger">{{ session('error') }}</div>
@@ -21,7 +25,7 @@
                       <select class="form-control" id="user_id" name="user_id" required>
                           <option value="">- Semua -</option>
                           @foreach($user as $item)
-                              <option value="{{ $item->user_id }}">{{ $item->user_nama }}</option>
+                              <option value="{{ $item->user_id }}">{{ $item->nama }}</option>
                           @endforeach
                       </select>
                       <small class="form-text text-muted">Level Pengguna</small>
@@ -45,7 +49,7 @@
   </div>
 
   <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-
-  backdrop="static" data-keyboard="false" data-width="75%" aria-hidden="true"></div> 
+  backdrop="static" data-keyboard="false" data-width="75%"></div> 
 @endsection 
  
 @push('css') 
@@ -60,7 +64,7 @@
     }); 
   }
   
-  var dataUser;
+  var dataPenjualan;
   $(document).ready(function() { 
       dataPenjualan = $('#table_penjualan').DataTable({ 
           // serverSide: true, jika ingin menggunakan server side processing 

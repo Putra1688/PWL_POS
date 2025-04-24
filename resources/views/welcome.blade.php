@@ -12,24 +12,17 @@
     </div>
 </div>
 
-<div class="card"> 
-    <div class="card-header"> 
-        <h3 class="card-title">Data Stok Barang</h3>  
-    </div> 
-    <div class="card-body"> 
-        @if(session('success')) 
-            <div class="alert alert-success">{{ session('success') }}</div> 
-        @endif 
-        @if(session('error')) 
-            <div class="alert alert-danger">{{ session('error') }}</div> 
-        @endif 
-
-        <table class="table table-bordered table-sm table-striped table-hover" id="table-stok"> 
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">{{ $page->title }}</h3>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-sm table-striped table-hover" id="table-rekap-stok"> 
             <thead> 
                 <tr>
-                    <th>ID</th>
+                    <th>No</th>
                     <th>Barang</th>
-                    <th>Jumlah Stok</th>
+                    <th>Total Stok</th>
                 </tr> 
             </thead> 
             <tbody></tbody> 
@@ -42,38 +35,36 @@
  
 @push('js') 
 <script> 
-    function modalAction(url = ''){ 
-        $('#myModal').load(url,function(){ 
-            $('#myModal').modal('show'); 
-        }); 
-    } 
-
-    var tableStok; 
-    $(document).ready(function(){ 
-        tableStok = $('#table-stok').DataTable({ 
-            processing: true, 
-            serverSide: true, 
-            autoWidth: false,
-            ajax: { 
-                "url": "{{ url('stok/list') }}", 
-                "dataType": "json", 
-                "type": "POST", 
-                "data": function (d) { 
-                    // Tambahkan filter kalau nanti dibutuhkan
-                } 
-            }, 
+    $(document).ready(function(){
+        $('#table-rekap-stok').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ '/rekaplist' }}",
+                type: "POST",
+            },
             columns: [
-                { data: "stok_id", className: "text-center", width: "5%", orderable: false, searchable: false },
-                { data: "barang.barang_nama", width: "20%" },
-                { data: "stok_jumlah", className: "text-center", width: "10%" },
+                {
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    className: 'text-center',
+                    orderable: false,
+                    searchable: false,
+                    width: '5%'
+                },
+                {
+                    data: 'barang_nama',
+                    name: 'barang_nama',
+                    width: '60%'
+                },
+                {
+                    data: 'stok_jumlah',
+                    name: 'stok_jumlah',
+                    className: 'text-center',
+                    width: '15%'
+                }
             ]
         });
-
-        $('#table-stok_filter input').unbind().bind().on('keyup', function(e){ 
-            if(e.keyCode == 13){ 
-                tableStok.search(this.value).draw(); 
-            } 
-        }); 
-    }); 
-</script> 
+    });
+</script>
 @endpush

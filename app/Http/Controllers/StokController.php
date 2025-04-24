@@ -12,6 +12,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
+use Illuminate\Support\Facades\DB;
+
 class StokController extends Controller
 {
     public function index()
@@ -267,19 +269,60 @@ class StokController extends Controller
     }
 
     public function export_pdf()
-{
-    $barang = BarangModel::select('supplier_id', 'barang_id', 'user_id', 'harga_beli', 'harga_jual')
-        ->orderBy('supplier_id')
-        ->orderBy('barang_id')
-        ->with('supplier')
-        ->get();
+    {
+        $barang = BarangModel::select('supplier_id', 'barang_id', 'user_id', 'harga_beli', 'harga_jual')
+            ->orderBy('supplier_id')
+            ->orderBy('barang_id')
+            ->with('supplier')
+            ->get();
 
-    // use Barryvdh\DomPDF\Facade\Pdf;
-    $pdf = Pdf::loadView('barang.export_pdf', ['barang' => $barang]);
-    $pdf->setPaper('a4', 'portrait'); // set ukuran kertas dan orientasi
-    $pdf->setOption('isRemoteEnabled', true); // set true jika ada gambar dari url
-    $pdf->render();
+        // use Barryvdh\DomPDF\Facade\Pdf;
+        $pdf = Pdf::loadView('barang.export_pdf', ['barang' => $barang]);
+        $pdf->setPaper('a4', 'portrait'); // set ukuran kertas dan orientasi
+        $pdf->setOption('isRemoteEnabled', true); // set true jika ada gambar dari url
+        $pdf->render();
 
-    return $pdf->stream('Data Stok ' . date('Y-m-d H:i:s') . '.pdf');
-}
+        return $pdf->stream('Data Stok ' . date('Y-m-d H:i:s') . '.pdf');
+    }
+
+    public function rekapIndex()
+    {
+        $breadcrumb = (object) [
+            'title' => 'Rekap Stok Barang',
+            'list' => ['Home', 'Stok', 'Rekap']
+        ];
+
+        $page = (object) [
+            'title' => 'Rekap Jumlah Stok per Barang'
+        ];
+
+        $activeMenu = 'rekap-stok'; // bisa disesuaikan dengan highlight sidebar
+
+        return view('welcome', [
+            'breadcrumb' => $breadcrumb,
+            'page' => $page,
+            'activeMenu' => $activeMenu
+        ]);
+    }
+
+    public function rekapList(Request $request)
+    {
+        $stok = StokModel::join('m_barang', 't_stok.barang_id', '=', 'm_barang.barang_id')
+            ->select(
+                'm_barang.barang_nama',
+                DB::raw('SUM(t_stok.stok_jumlah) as total_stok')
+            )
+            ->groupBy('t_stok.barang_id', 'm_barang.barang_nama');
+
+        return DataTables::of($stok)
+            ->addIndexColumn()
+            ->addColumn('barang_nama', function ($s) {
+                return $s->barang_nama;
+            })
+            ->addColumn('stok_jumlah', function ($s) {
+                return $s->total_stok;
+            })
+            ->make(true);
+    }
+
 }
