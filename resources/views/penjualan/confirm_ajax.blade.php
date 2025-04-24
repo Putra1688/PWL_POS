@@ -49,17 +49,17 @@
                 submitHandler: function(form) { 
                     $.ajax({ 
                         url: form.action, 
-                        type: form.method, 
+                        type: 'POST', 
                         data: $(form).serialize(), 
                         success: function(response) { 
                             if(response.status){ 
-                                $('#myModal').modal('hide'); 
+                                $('#modal-master').modal('hide'); 
                                 Swal.fire({ 
                                     icon: 'success', 
                                     title: 'Berhasil', 
                                     text: response.message 
                                 }); 
-                                dataStok.ajax.reload(); 
+                                dataPenjualan.ajax.reload(); 
                             }else{ 
                                 $('.error-text').text(''); 
                                 $.each(response.msgField, function(prefix, val) { 

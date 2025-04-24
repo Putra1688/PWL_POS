@@ -87,27 +87,24 @@ class PenjualanController extends Controller
     public function create()
     {
         $barang = BarangModel::select('barang_id', 'barang_nama', 'barang_kode', 'harga_jual')
-            ->with('stok') // ambil stok terbaru
+            ->with('stok')
             ->whereHas('stok')
-            ->get();
+            ->get()
+            ->filter(function ($brg) {
+                return $brg->real_stok > 0;
+            })
+            ->values(); // reset keys
 
-        // dd($barang);
         return view('penjualan.create')->with([
             'barang' => $barang
         ]);
     }
 
-    public function create_ajax() {
-        $barang = BarangModel::select('barang_id', 'barang_nama', 'barang_kode', 'harga_jual')
-        ->with('stok') // ambil stok terbaru
-        ->whereHas('stok')
-        ->get();
 
-        return view('penjualan.create_penjualan', [
-            'barang' => $barang
-        ]);
-    }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         if ($request->ajax() || $request->wantsJson()) {
@@ -174,7 +171,7 @@ class PenjualanController extends Controller
                 $dataDetail['created_at'] = now();
                 $dataDetail['updated_at'] = now();
 
-                // PenjualanDetailModel::create($dataDetail);
+                
 
                 try {
                     PenjualanDetail::create($dataDetail);
@@ -197,81 +194,6 @@ class PenjualanController extends Controller
 
         return redirect('/');
     }
-
-    public function store_ajax(Request $request)
-{
-    if ($request->ajax() || $request->wantsJson()) {
-        $rules = [
-            'pembeli' => 'required|string|max:100',
-            'penjualan_kode' => 'required|string|max:7|unique:t_penjualan,penjualan_kode',
-            'barang_id' => 'required|array',
-            'barang_id.*' => 'required|integer|exists:m_barang,barang_id', // validasi barang yang dipilih
-            'jumlah' => 'required|array', // pastikan jumlah adalah array
-            'jumlah.*' => 'required|integer|min:1', // validasi jumlah
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            $errorMessage = $validator->errors()->has('penjualan_kode') 
-                ? 'Validasi Gagal (Kode Sudah Digunakan)' 
-                : 'Validasi Gagal';
-
-            return response()->json([
-                'status' => false,
-                'message' => $errorMessage,
-                'msgField' => $validator->errors(),
-            ]);
-        }
-
-        // Memastikan jumlah barang sesuai dengan yang dikirimkan
-        if (count($request->barang_id) !== count($request->jumlah)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Data barang dan jumlah tidak konsisten',
-            ]);
-        }
-
-        DB::beginTransaction();
-        try {
-            // Menyimpan data penjualan utama
-            $dataPenjualan = $request->only('pembeli', 'penjualan_kode');
-            $dataPenjualan['user_id'] = auth()->user()->user_id;
-            $dataPenjualan['penjualan_tanggal'] = now();
-            $dataPenjualan['created_at'] = now();
-            $dataPenjualan['updated_at'] = now();
-
-            $penjualan = PenjualanModel::create($dataPenjualan);
-
-            // Menyimpan detail penjualan per barang tanpa harga
-            for ($i = 0; $i < count($request->barang_id); $i++) {
-                PenjualanDetail::create([
-                    'penjualan_id' => $penjualan->penjualan_id,
-                    'barang_id' => $request->barang_id[$i],
-                    'jumlah' => $request->jumlah[$i],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Data penjualan berhasil disimpan'
-            ]);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Gagal Disimpan: ' . $th->getMessage()
-            ]);
-        }
-    }
-
-    return redirect('/');
-}
-
 
     public function confirm_ajax(string $id) {
         $penjualan = PenjualanModel::find($id);
@@ -296,6 +218,7 @@ class PenjualanController extends Controller
                 ]);
             }
         }
-        return redirect('/');
+        return redirect('/penjualan');
     }
+    
 }
