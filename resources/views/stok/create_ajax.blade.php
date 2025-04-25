@@ -30,17 +30,16 @@
                 </div> 
                 <div class="form-group"> 
                     <label>User</label> 
-                    <select name="user_id" id="user_id" class="form-control" required> 
-                        <option value="">- Pilih User -</option> 
-                        @foreach($user as $l) 
-                            <option value="{{ $l->user_id }}">{{ $l->nama }}</option> 
-                        @endforeach 
+                    <select name="user_id" id="user_id" class="form-control" required readonly>
+                        <option value="{{ auth()->user()->user_id }}" selected>
+                            {{ auth()->user()->nama }}
+                        </option>
                     </select> 
                     <small id="error-user_id" class="error-text form-text text-danger"></small> 
                 </div> 
                 <div class="form-group"> 
                     <label>Tanggal</label> 
-                    <input value="" type="date" name="stok_tanggal" id="stok_tanggal" class="form-control" required> 
+                    <input value="{{ date('Y-m-d') }}" type="date" name="stok_tanggal" id="stok_tanggal" class="form-control" required> 
                     <small id="error-stok_tanggal" class="error-text form-text text-danger"></small> 
                 </div> 
                 

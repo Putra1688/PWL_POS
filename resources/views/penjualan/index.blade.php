@@ -8,8 +8,6 @@
                 <button onclick="modalAction('{{ url('/penjualan/create') }}')" class="btn btn-sm btn-success mt-1">
                     Tambah Ajax
                 </button>
-                <button onclick="modalAction('{{ url('/penjualan/import') }}')" class="btn btn-sm btn-info mt-1">Import
-                    penjualan</button>
                 <a href="{{ url('/penjualan/export_excel') }}" class="btn btn-sm btn-primary mt-1"><i
                         class="fa fa-file-excel"></i> Export penjualan</a>
                 <a href="{{ url('/penjualan/export_pdf') }}" class="btn btn-sm btn-warning mt-1"><i
