@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Iluminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+
 
 class UserModel extends Authenticatable implements JWTSubject
 {
@@ -23,8 +26,13 @@ class UserModel extends Authenticatable implements JWTSubject
     protected $primaryKey = 'user_id';
 
     // model & eloquent orm
-    protected $fillable = ['level_id', 'username', 'nama', 'password'];
+    protected $fillable = ['level_id', 'username', 'nama', 'password','image'];
 
+    protected function image(): Attribute{
+        return Attribute::make (
+            get: fn($image) => url('/storage/posts' .$image),
+        );
+    }
     protected $hidden = ['password'];
     protected $cast = ['password' => 'hashed'];
 
@@ -46,4 +54,5 @@ class UserModel extends Authenticatable implements JWTSubject
     }
 
 
+    
 }
